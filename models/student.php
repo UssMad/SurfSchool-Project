@@ -19,8 +19,8 @@ class Student {
 
     public function getAll($search = null) {
         if ($search) {
-            $stmt = $this->conn->prepare("SELECT * FROM students WHERE name LIKE ?");
-            $stmt->execute(["%$search%"]);
+            $stmt = $this->conn->prepare("SELECT * FROM students WHERE name LIKE ? OR country LIKE ?");
+            $stmt->execute(["%$search%", "%$search%"]);
             return $stmt->fetchAll();
         }
 

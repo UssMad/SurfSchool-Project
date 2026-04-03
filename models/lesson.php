@@ -9,14 +9,26 @@ class Lesson {
         $this->conn = $db->connect();
     }
 
-    public function getAll($date = null) {
-        if ($date) {
-            $stmt = $this->conn->prepare("SELECT * FROM lessons WHERE DATE(date_time)=?");
-            $stmt->execute([$date]);
-            return $stmt->fetchAll();
+    public function getAll($search = null, $date = null) {
+        $query = "SELECT * FROM lessons WHERE 1=1";
+        $params = [];
+
+        if ($search) {
+            $query .= " AND (title LIKE ? OR coach LIKE ?)";
+            $params[] = "%$search%";
+            $params[] = "%$search%";
         }
 
-        return $this->conn->query("SELECT * FROM lessons ORDER BY date_time DESC")->fetchAll();
+        if ($date) {
+            $query .= " AND DATE(date_time) = ?";
+            $params[] = $date;
+        }
+
+        $query .= " ORDER BY date_time DESC";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
     }
 
     public function create($title, $coach, $date) {

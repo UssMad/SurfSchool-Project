@@ -24,8 +24,8 @@ class AdminController {
         $enrollModel = new Enroll();
 
         $students = $studentModel->getAll($search);
-        $lessons = $lessonModel->getAll($date);
-        $enrolls = $enrollModel->getAll();
+        $lessons = $lessonModel->getAll($search, $date);
+        $enrolls = $enrollModel->getAll($search);
 
         // stats
         $totalStudents = $studentModel->count();

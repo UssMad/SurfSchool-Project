@@ -9,14 +9,26 @@ class Enroll {
         $this->conn = $db->connect();
     }
 
-    public function getAll() {
-        return $this->conn->query("
+    public function getAll($search = null) {
+        $query = "
             SELECT lessons_student.*, students.name, lessons.title, lessons.date_time, lessons.coach
             FROM lessons_student
             JOIN students ON students.id = lessons_student.student_id
             JOIN lessons ON lessons.id = lessons_student.lesson_id
-            ORDER BY lessons.date_time DESC
-        ")->fetchAll();
+        ";
+        
+        $params = [];
+        if ($search) {
+            $query .= " WHERE students.name LIKE ? OR lessons.title LIKE ?";
+            $params[] = "%$search%";
+            $params[] = "%$search%";
+        }
+
+        $query .= " ORDER BY lessons.date_time DESC";
+        
+        $stmt = $this->conn->prepare($query);
+        $stmt->execute($params);
+        return $stmt->fetchAll();
     }
 
     public function assign($student_id, $lesson_id) {

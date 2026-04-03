@@ -158,10 +158,11 @@
                     <div class="section-header">
                         <h2><i class="fas fa-users"></i> Students</h2>
                         <form method="GET" class="filter-bar">
-                            <input type="text" name="search" placeholder="Search by name..." value="<?= htmlspecialchars($search ?? '') ?>">
+                            <input type="hidden" name="tab" value="students">
+                            <input type="text" name="search" placeholder="Search by name or country..." value="<?= htmlspecialchars($search ?? '') ?>">
                             <button type="submit"><i class="fas fa-search"></i> Search</button>
                             <?php if ($search): ?>
-                                <a href="dashboard.php" class="btn btn-sm btn-outline">Clear</a>
+                                <a href="dashboard.php?tab=students" class="btn btn-sm btn-outline">Clear</a>
                             <?php endif; ?>
                         </form>
                     </div>
@@ -256,10 +257,12 @@
                     <div class="section-header">
                         <h2><i class="fas fa-chalkboard-teacher"></i> Lessons</h2>
                         <form method="GET" class="filter-bar">
+                            <input type="hidden" name="tab" value="lessons">
+                            <input type="text" name="search" placeholder="Search title or coach..." value="<?= htmlspecialchars($search ?? '') ?>">
                             <input type="date" name="date" value="<?= htmlspecialchars($date ?? '') ?>">
-                            <button type="submit"><i class="fas fa-filter"></i> Filter</button>
-                            <?php if ($date): ?>
-                                <a href="dashboard.php" class="btn btn-sm btn-outline">Clear</a>
+                            <button type="submit"><i class="fas fa-search"></i> Search</button>
+                            <?php if ($search || $date): ?>
+                                <a href="dashboard.php?tab=lessons" class="btn btn-sm btn-outline">Clear</a>
                             <?php endif; ?>
                         </form>
                     </div>
@@ -348,6 +351,14 @@
                 <div class="section">
                     <div class="section-header">
                         <h2><i class="fas fa-clipboard-list"></i> Enrollments & Payments</h2>
+                        <form method="GET" class="filter-bar">
+                            <input type="hidden" name="tab" value="enrollments">
+                            <input type="text" name="search" placeholder="Search student or lesson..." value="<?= htmlspecialchars($search ?? '') ?>">
+                            <button type="submit"><i class="fas fa-search"></i> Search</button>
+                            <?php if ($search): ?>
+                                <a href="dashboard.php?tab=enrollments" class="btn btn-sm btn-outline">Clear</a>
+                            <?php endif; ?>
+                        </form>
                     </div>
 
                     <div class="table-wrapper">
