@@ -29,7 +29,7 @@
     </nav>
 
     <!-- ========== HERO SECTION ========== -->
-    <header class="hero">
+    <header class="hero"> 
         <div class="hero-overlay"></div>
         <div class="hero-content">
             <div class="badge-new">NEW: SPRING 2026 REGISTRATION OPEN</div>

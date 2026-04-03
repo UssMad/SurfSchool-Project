@@ -7,6 +7,7 @@ session_start();
    If guest, show the new premium landing page.
 */
 
+
 if (isset($_SESSION['user'])) {
     $user = $_SESSION['user'];
     if ($user['role'] == 'admin') {

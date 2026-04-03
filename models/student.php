@@ -46,8 +46,27 @@ class Student {
     }
 
     public function delete($id) {
-        $stmt = $this->conn->prepare("DELETE FROM students WHERE id=?");
-        return $stmt->execute([$id]);
+        // 1. Get user_id before deleting the student record
+        $stmt = $this->conn->prepare("SELECT user_id FROM students WHERE id = ?");
+        $stmt->execute([$id]);
+        $student = $stmt->fetch();
+        $user_id = $student ? $student['user_id'] : null;
+
+        // 2. Delete all related enrollments first (Fixes the Foreign Key error)
+        $stmt = $this->conn->prepare("DELETE FROM lessons_student WHERE student_id = ?");
+        $stmt->execute([$id]);
+
+        // 3. Delete the student profile
+        $stmt = $this->conn->prepare("DELETE FROM students WHERE id = ?");
+        $result = $stmt->execute([$id]);
+
+        // 4. Delete the associated user login account
+        if ($user_id) {
+            $stmt = $this->conn->prepare("DELETE FROM users WHERE id = ?");
+            $stmt->execute([$user_id]);
+        }
+
+        return $result;
     }
 
     public function count() {
